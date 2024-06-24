@@ -29,13 +29,15 @@ public class CandidateDB extends BaseDB {
     }
 
     public static void Create(Candidate candidate)  {
-        var sql = "INSERT INTO candidato (Nome, Email, Senha) VALUES (?, ?, ?)";
+        var sql = "INSERT INTO candidato (Nome, Email, Senha, Competencia, Experiencia) VALUES (?, ?, ?, ?, ?)";
         try (var connection = getConnection();
              var statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, candidate.Name);
             statement.setString(2, candidate.Email);
             statement.setString(3, candidate.Password);
+            statement.setString(3, candidate.Competence);
+            statement.setString(3, candidate.Experience);
             statement.executeUpdate();
         } catch (SQLException ex) {
             Util.PrintError("SQL error occurred: " + ex.getMessage());
@@ -49,13 +51,14 @@ public class CandidateDB extends BaseDB {
             return false;
         }
 
-        var sql = "UPDATE candidato SET Nome = ?, Email = ?, Senha = ? WHERE Email = ?";
+        var sql = "UPDATE candidato SET Nome = ?, Email = ?, Senha = ? Competencia = ?, WHERE Email = ?";
         try (var connection = getConnection();
              var statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, candidate.Name);
             statement.setString(2, candidate.Email);
             statement.setString(3, candidate.Password);
+            statement.setString(3, candidate.Competence);
             statement.setString(4, candidate.Email);
 
             var affectedRows = statement.executeUpdate();
